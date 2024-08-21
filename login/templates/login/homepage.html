@@ -92,9 +92,14 @@
     <div class="navbar">
         <div class="logo">MyWebsite</div>
         <div class="nav-links">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'signup' %}">Sign Up</a>
-            <a href="{% url 'login' %}">Login</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'login' %}">Login</a>
+            {% else %}
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
         </div>
         {% if user.is_authenticated %}
             <div class="user-info">

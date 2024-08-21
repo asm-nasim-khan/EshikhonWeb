@@ -1,19 +1,9 @@
 from django.http import HttpResponse
-from .forms import UserEntry
-from .models import User_info
-# from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.hashers import check_password
+# from django.contrib.auth.hashers import make_password
+# from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
-
-from django.contrib.auth.models import User
-from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse
-
-
-from django.contrib.auth import authenticate, login as auth_login
-from django.shortcuts import render, redirect
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
 
@@ -65,8 +55,11 @@ def signup_view(request):
         else:
             return HttpResponse("Form is not valid")
     else:
-        form = UserCreationForm()
-    return render(request, "login/signup_page.html", {'form': form})
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            form = UserCreationForm()
+            return render(request, "login/signup_page.html", {'form': form})
 
 
 
@@ -82,8 +75,11 @@ def login_view(request):
         else:
             return HttpResponse("Invalid credentials")
     else:
-        form = AuthenticationForm()
-    return render(request, "login/login_page.html", {'form': form})
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            form = AuthenticationForm()
+            return render(request, "login/login_page.html", {'form': form})
 
 
 def logout_view(request):
